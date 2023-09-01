@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NSS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.3/css/uikit.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            background-color: #E0FFFF;
+            /* Color celeste claro en formato hexadecimal */
+            margin: 0;
+            /* Elimina el margen predeterminado del body para ocupar toda la página */
+        }
+
+        #map {
+            width: 800px;
+            height: 400px;
+            border: 20px solid #ccc;
+            margin: auto;
+        }
+
+        /* Estilos para los formularios */
+        .uk-form {
+            margin-bottom: 20px;
+        }
+
+        /* Agregamos clases de ancho para tres columnas */
+        .uk-form-column {
+            width: calc(100% / 3);
+            float: left;
+        }
+        .uk-form-small {
+        /* Ajusta el ancho deseado para los formularios pequeños */
+        width: 400px;
+        }
+
+        .uk-form-small label {
+        /* Ajusta el ancho deseado para las etiquetas dentro de los formularios pequeños */
+        width: 300px;
+        }
+
+        .uk-form-small input[type="text"],
+        .uk-form-small select {
+        /* Ajusta el ancho deseado para los campos de texto y selects dentro de los formularios pequeños */
+        width: 150px;
+        }        
+    </style>
+</head>
+
+<body>
+
+    <!-- Contenido de tu página aquí -->
+
+    <h1>NSS</h1>
+    <h2>Seleccione ubicación:</h2>
+    <div id="map"></div>
+
+    <!-- Formulario para mostrar la latitud y longitud -->
+    <form action="/guardar" method="post" class="uk-form-stacked uk-padding-small uk-width-1-2@m uk-align-center">
+        <label for="latitud">Latitud:</label>
+        <input type="text" id="latitud" name="latitud" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="longitud">Longitud:</label>
+        <input type="text" id="longitud" name="longitud" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="tipoSistema">Tipo de sistema:</label>
+        <select type="text" id="tipoSistema" name="tipoSistema" class="uk-input uk-margin-bottom">
+            <option></option>
+            <option value="On-Grid">On-Grid</option>
+            <option value="Off-Grid">Off-Grid</option>
+            <option value="Hibrido">Híbrido</option>
+        </select>
+        <br>
+    </form>
+
+    <!-- Formulario para seleccionar inversor (Inicialmente oculto) -->
+    <div class="uk-form uk-form-small uk-hidden uk-form-column" id="formInversor">
+        <h3>Selección de inversor:</h3>
+        <!-- Agrega el campo select para mostrar la lista de modelos -->
+        <label for="modeloInversor">Modelo de inversor:</label>
+        <select id="modeloInversor" class="uk-select uk-margin-bottom">
+            <!-- Opciones de modelos se cargarán aquí dinámicamente -->
+        </select>
+        <br>
+        <!-- Agrega aquí los campos del formulario para la selección del inversor -->
+        <label for="potenciaInversor">Potencia:</label>
+        <input type="text" id="potenciaInversor" name="potenciaInversor" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="maxpvInversor">Max PV:</label>
+        <input type="text" id="maxpvInversor" name="maxpvInversor" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="cantMppt">Cantidad de MPPT:</label>
+        <input type="text" id="cantMppt" name="cantMppt" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="inputMppt">Cantidad de entradas por MPPT:</label>
+        <input type="text" id="inputMppt" name="inputMppt" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="vmin">Tension minima:</label>
+        <input type="text" id="vmin" name="vmin" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="vmax">Tension maxima:</label>
+        <input type="text" id="vmax" name="vmax" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="imppt">Corriente max en el MPPT:</label>
+        <input type="text" id="imppt" name="imppt" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="ioutput">Corriente de salida:</label>
+        <input type="text" id="ioutput" name="ioutput" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="ibat">Corriente bateria:</label>
+        <input type="text" id="ibat" name="ibat" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="eff">Eficiencia:</label>
+        <input type="text" id="eff" name="eff" readonly class="uk-input uk-margin-bottom">
+        <br>
+        <label for="config">Configuración:</label>
+        <select type="text" id="tipoSistema" name="tipoSistema" class="uk-input uk-margin-bottom">
+            <option value="SOLAR">SOLAR</option>
+            <option value="LINE">LINE</option>
+            <option value="BACK-UP">BACK-UP</option>
+        </select>
+        <br>
+        <!-- Agrega los demás campos del inversor aquí -->
+    </div>
+
+    <!-- Formulario para seleccionar panel (Inicialmente oculto) -->
+    <div class="uk-form uk-form-small uk-hidden uk-form-column" id="formPanel">
+        <h3>Selección de panel:</h3>
+        <!-- Agrega aquí los campos del formulario para la selección del panel -->
+    </div>
+
+    <!-- Formulario para seleccionar batería (Inicialmente oculto) -->
+    <div class="uk-form uk-form-small uk-hidden uk-form-column" id="formBateria">
+        <h3>Selección de batería:</h3>
+        <!-- Agrega aquí los campos del formulario para la selección de la batería -->
+    </div>
+
+    <!-- Scripts para Leaflet y UIKit -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.3/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.3/js/uikit-icons.min.js"></script>
+
+    <!-- Tu código JavaScript personalizado aquí -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('map', {
+                center: [-33.6769, -58.5588],
+                zoom: 7,
+                style: 'border: 2px solid #ccc;' /* Agregar el estilo de borde directamente */
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Marcador que se agregará en el mapa al hacer clic
+            var marker = L.marker([0, 0]).addTo(map);
+
+            function onMapClick(e) {
+                var lat = e.latlng.lat.toFixed(6);
+                var lng = e.latlng.lng.toFixed(6);
+
+                // Actualiza las coordenadas en los campos de entrada con los ids "latitud" y "longitud"
+                document.getElementById('latitud').value = lat;
+                document.getElementById('longitud').value = lng;
+
+                // Actualiza la posición del marcador en el mapa
+                marker.setLatLng(e.latlng);
+            }
+
+            map.on('click', onMapClick);
+
+            // Obtener el elemento select de tipoSistema
+            var tipoSistemaSelect = document.getElementById('tipoSistema');
+
+            // Función para mostrar u ocultar los formularios según la selección de tipoSistema
+            function mostrarFormularios() {
+                var tipoSistema = tipoSistemaSelect.value;
+
+                // Mostrar u ocultar formularios según la selección
+                if (tipoSistema === 'On-Grid') {
+                    formInversor.classList.remove('uk-hidden');
+                    formPanel.classList.remove('uk-hidden');
+                    formBateria.classList.add('uk-hidden');
+                } else if (tipoSistema === 'Off-Grid' || tipoSistema === 'Hibrido') {
+                    formInversor.classList.remove('uk-hidden');
+                    formPanel.classList.remove('uk-hidden');
+                    formBateria.classList.remove('uk-hidden');
+                } else {
+                    formInversor.classList.add('uk-hidden');
+                    formPanel.classList.add('uk-hidden');
+                    formBateria.classList.add('uk-hidden');
+                }
+            }
+
+           
+            // Agregar el evento onchange para detectar cambios en el select tipoSistema
+            tipoSistemaSelect.addEventListener('change', function () {
+                mostrarFormularios();
+      
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
