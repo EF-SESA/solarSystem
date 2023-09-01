@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Sitio</title>
+        <link href="/styles/styles.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    </head>
+    <body class="sb-nav-fixed">
+        <h1>Selección de sitio</h1>
+        <main>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Info básica del sistema
+                        </div>
+                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                            <div id="map"></div>
+                                <form class="form-floating" action="/guardarSitio" method="post">
+                                    <div id="menu" align="center">
+                                        
+                                        <br>
+                                        <label for="nombre">Nombre de Proyecto:</label>
+                                        <input type="text" id="nombre" name="nombre">
+                                        <br>
+                                        <label for="latitud">Latitud:</label>
+                                        <input type="text" id="latitud" name="latitud" readonly>
+                                        <br>
+                                        <label for="longitud">Longitud:</label>
+                                        <input type="text" id="longitud" name="longitud" readonly>
+                                        <br>
+                                        <label for="tipoSistema">Tipo de sistema:</label>
+                                        <select type="text" id="tipoSistema" name="tipoSistema" class="form-control">
+                                            <option></option>
+                                            <option value="On-Grid">On-Grid</option>
+                                            <option value="Off-Grid">Off-Grid</option>
+                                            <option value="Hibrido">Híbrido</option>
+                                        </select>
+                                        <p></p>
+                                        <input type="submit" name="guardarCoordenadas" id="guardarCoordenadas" value="Guardar" style="font-size:20px">
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        
+        <!-- JS de Bootstrap (incluyendo los componentes de Bootstrap) -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+ 
+
+    <!-- Tu código JavaScript personalizado aquí -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('map', {
+                center: [-34.596702, -58.450278],
+                zoom: 11,
+                style: 'border: 2px solid #ccc;' /* Agregar el estilo de borde directamente */
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Marcador que se agregará en el mapa al hacer clic
+            var marker = L.marker([0, 0]).addTo(map);
+
+            function onMapClick(e) {
+                var lat = e.latlng.lat.toFixed(6);
+                var lng = e.latlng.lng.toFixed(6);
+
+                // Actualiza las coordenadas en los campos de entrada con los ids "latitud" y "longitud"
+                document.getElementById('latitud').value = lat;
+                document.getElementById('longitud').value = lng;
+
+                // Actualiza la posición del marcador en el mapa
+                marker.setLatLng(e.latlng);
+            }
+
+            map.on('click', onMapClick);
+
+        });
+    </script>
+    </body>
+</html>

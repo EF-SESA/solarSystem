@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Inversor</title>
+        <link href="/styles/styles.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    </head>
+    <body class="sb-nav-fixed">
+        <h1>Selección de Inversor</h1>
+        <main>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Selección de equipo
+                        </div>
+                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                <form class="form-floating" action="/Inversor" method="post">
+                                    <div id="menu" align="left"> 
+                                        <br>
+                                        <label for="nombre">Modelo:</label>
+                                        <select id="nombre" name="nombre">
+                                            <option></option>
+                                            <% modInv.forEach(item => { %>
+                                                <option value="<%= item.modelo %>">
+                                                    <%= item.modelo %>
+                                                </option>
+                                            <% }); %>
+                                        </select>
+                                        <br>
+                                        <label for="potencia">Potencia:</label>
+                                        <input type="text" id="potencia" name="potencia" readonly> W
+                                        <br>
+                                        <label for="maxpv">Maxima potencia FV:</label>
+                                        <input type="text" id="maxpv" name="maxpv" readonly> W
+                                        <br>
+                                        <label for="mppt">Cantidad de MPPT:</label>
+                                        <input type="text" id="mppt" name="mppt" readonly>
+                                        <br>  
+                                        <label for="cmppt">Cantidad de inputs por MPPT:</label>
+                                        <input type="text" id="cmppt" name="cmppt" readonly>
+                                        <br>
+                                        <label for="vmin">Tensión minima:</label>
+                                        <input type="text" id="vmin" name="vmin" readonly> Vdc
+                                        <br>
+                                        <label for="vmax">Tensión Maxima:</label>
+                                        <input type="text" id="vmax" name="vmax" readonly> Vdc
+                                        <br>
+                                        <label for="imppt">Corriente maxima de entrada en el MPPT:</label>
+                                        <input type="text" id="imppt" name="imppt" readonly> A
+                                        <br>
+                                        <label for="ioutput">Corriente maxima de salida:</label>
+                                        <input type="text" id="ioutput" name="ioutput" readonly> A
+                                        <br>
+                                        <label for="ibat">Corriente de carga:</label>
+                                        <input type="text" id="ibat" name="ibat" readonly> A
+                                        <br> 
+                                        <label for="eff">Eficiencia:</label>
+                                        <input type="text" id="eff" name="eff" readonly> %
+                                        <br>                                       
+                                        <p></p>
+                                        <input type="submit" name="guardarCoordenadas" id="guardarCoordenadas" value="Guardar" style="font-size:20px">
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        
+        <!-- JS de Bootstrap (incluyendo los componentes de Bootstrap) -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+ 
+
+    <!-- Tu código JavaScript personalizado aquí -->
+    <script>
+        var modInv = <%- JSON.stringify(modInv) %>; // Convertir a JSON para asegurarse de que se interprete correctamente
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectModelo = document.getElementById("nombre");
+            const potenciaInput = document.getElementById("potencia");
+            const maxpv = document.getElementById("maxpv");
+            const mppt = document.getElementById("mppt");
+            const cmppt = document.getElementById("cmppt");
+            const vmin = document.getElementById("vmin");
+            const vmax = document.getElementById("vmax");
+            const imppt = document.getElementById("imppt");
+            const ioutput = document.getElementById("ioutput");
+            const ibat = document.getElementById("ibat");
+            const eff = document.getElementById("eff");
+            // Agrega más variables para los otros campos
+            
+            selectModelo.addEventListener("change", function() {
+                const selectedModelo = selectModelo.value;
+                const selectedModeloObj = modInv.find(item => item.modelo === selectedModelo);
+                //modelo, potencia, maxpv, cantmppt, inputmppt, vmin, vmax, imppt, ioutput, ibat, eff
+                if (selectedModeloObj) {
+                    potenciaInput.value = selectedModeloObj.potencia;
+                    maxpv.value = selectedModeloObj.maxpv;
+                    mppt.value = selectedModeloObj.cantmppt;
+                    cmppt.value = selectedModeloObj.inputmppt;
+                    vmin.value = selectedModeloObj.vmin;
+                    vmax.value = selectedModeloObj.vmax;
+                    imppt.value = selectedModeloObj.imppt;
+                    ioutput.value = selectedModeloObj.ioutput;
+                    ibat.value = selectedModeloObj.ibat;
+                    eff.value = selectedModeloObj.eff;
+                    // Actualiza los otros campos input con la misma lógica
+                } else {
+                    potenciaInput.value = "";
+                    maxpv.value = "";
+                    mppt.value = "";
+                    cmppt.value = "";
+                    vmin.value = "";
+                    vmax.value = "";
+                    imppt.value = "";
+                    ioutput.value = "";
+                    ibat.value = "";
+                    eff.value = "";                    
+                    // Limpia los otros campos
+                }
+            });
+        });    
+    </script>
+    </body>
+</html>

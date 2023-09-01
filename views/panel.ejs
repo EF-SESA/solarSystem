@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Inversor</title>
+        <link href="/styles/styles.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    </head>
+    <body class="sb-nav-fixed">
+        <h1>Selección de Panel Solar</h1>
+        <main>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Selección de equipo
+                        </div>
+                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                <form class="form-floating" action="/panel" method="post">
+                                    <div id="menu" align="left"> 
+                                        <br>
+                                        <label for="nombre">Modelo:</label>
+                                        <select id="nombre" name="nombre">
+                                            <option></option>
+                                            <% modPanel.forEach(item => { %>
+                                                <option value="<%= item.modelo %>">
+                                                    <%= item.modelo %>
+                                                </option>
+                                            <% }); %>
+                                        </select>
+                                        <br>
+                                        <label for="potencia">Potencia:</label>
+                                        <input type="text" id="potencia" name="potencia" readonly> W
+                                        <br>
+                                        <label for="voc">Tensión de circuito abierto:</label>
+                                        <input type="text" id="voc" name="voc" readonly> V
+                                        <br>
+                                        <label for="isc">Corriente de cortocircuito:</label>
+                                        <input type="text" id="isc" name="isc" readonly> A
+                                        <br>  
+                                        <label for="coefv">Coef. de temperatura para la tensión:</label>
+                                        <input type="text" id="coefv" name="coefv" readonly>
+                                        <br>
+                                        <label for="coefi">Coef. de temperatura para la Corriente:</label>
+                                        <input type="text" id="coefi" name="coefi" readonly> %
+                                        <br>
+                                        <label for="eff">Eficiencia:</label>
+                                        <input type="text" id="eff" name="eff" readonly> %
+                                        <br>
+                                        <label for="altura">Altura:</label>
+                                        <input type="text" id="altura" name="altura" readonly> mm
+                                        <br>
+                                        <label for="ancho">Ancho:</label>
+                                        <input type="text" id="ancho" name="ancho" readonly> mm
+                                        <br>
+                                        <label for="espesor">espesor:</label>
+                                        <input type="text" id="espesor" name="espesor" readonly> mm
+                                        <br>                                       
+                                        <p></p>
+                                        <input type="submit" name="guardarCoordenadas" id="guardarCoordenadas" value="Guardar" style="font-size:20px">
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        
+        <!-- JS de Bootstrap (incluyendo los componentes de Bootstrap) -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+ 
+
+    <!-- Tu código JavaScript personalizado aquí -->
+    <script>
+        var modPanel = <%- JSON.stringify(modPanel) %>; // Convertir a JSON para asegurarse de que se interprete correctamente
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectModelo = document.getElementById("nombre");
+            const potenciaInput = document.getElementById("potencia");
+            const voc = document.getElementById("voc");
+            const isc = document.getElementById("isc");
+            const coefv = document.getElementById("coefv");
+            const coefi = document.getElementById("coefi");
+            const eff = document.getElementById("eff");
+            const altura = document.getElementById("altura");
+            const ancho = document.getElementById("ancho");
+            const espesor = document.getElementById("espesor");
+            // Agrega más variables para los otros campos
+            
+            selectModelo.addEventListener("change", function() {
+                const selectedModelo = selectModelo.value;
+                const selectedModeloObj = modPanel.find(item => item.modelo === selectedModelo);
+                //modelo, potencia, voc, isc, coefv, coefi, eff, altura, ancho, espesor
+                if (selectedModeloObj) {
+                    potenciaInput.value = selectedModeloObj.potencia;
+                    voc.value = selectedModeloObj.voc;
+                    isc.value = selectedModeloObj.isc;
+                    coefv.value = selectedModeloObj.coefv;
+                    coefi.value = selectedModeloObj.coefi;
+                    eff.value = selectedModeloObj.eff;
+                    altura.value = selectedModeloObj.altura;
+                    ancho.value = selectedModeloObj.ancho;
+                    espesor.value = selectedModeloObj.espesor;
+                    // Actualiza los otros campos input con la misma lógica
+                } else {
+                    potenciaInput.value = "";
+                    voc.value = "";
+                    isc.value = "";
+                    coefv.value = "";
+                    coefi.value = "";
+                    eff.value = "";
+                    altura.value = "";
+                    ancho.value = "";
+                    espesor.value = "";                  
+                    // Limpia los otros campos
+                }
+            });
+        });    
+    </script>
+    </body>
+</html>

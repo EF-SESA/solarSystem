@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <link href="/styles/styles.css" rel="stylesheet" />
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link" href="/">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Parametros
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Layouts
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.ejs">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.ejs">Light Sidenav</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Pages
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Authentication
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.ejs">Login</a>
+                                            <a class="nav-link" href="register.ejs">Register</a>
+                                            <a class="nav-link" href="password.ejs">Forgot Password</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        Error
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.ejs">401 Page</a>
+                                            <a class="nav-link" href="404.ejs">404 Page</a>
+                                            <a class="nav-link" href="500.ejs">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="charts.ejs">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts
+                            </a>
+                            <a class="nav-link" href="tables.ejs">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        Start Bootstrap
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Sistema</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Configuración</li>
+                        </ol>
+                        <div id="initialButtons" align="center">
+                            Seleccione proyecto:
+                            <select id="nombre">
+                                <% proyecto.forEach(proyecto=> { %>
+                                    <option value="<%= proyecto %>">
+                                        <%= proyecto %>
+                                    </option>
+                                    <% }); %>
+                            </select>
+                            <button id="cargar" style="font-size:20px">Cargar</button>
+                            <button id="nuevo" style="font-size:20px">Nuevo proyecto</button>
+                            <button id="eliminar" style="font-size:20px">Eliminar</button>
+                            <p></p>
+                            <div id="message"></div>
+                        </div>
+                        <div id="proyecto" style="display: none;">
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-warning text-white mb-4">
+                                        <div class="card-body">Inversor</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/inversor">Elegir equipo</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-success text-white mb-4">
+                                        <div class="card-body">Panel solar</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/panel">Elegir panel</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-danger text-white mb-4">
+                                        <div class="card-body">Almacenamiento</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="/bateria">Elegir equipo</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card bg-primary text-white mb-4">
+                                        <div class="card-body">Grupo Electrogeno</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <a class="small text-white stretched-link" href="#">Elegir equipo</a>
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-area me-1"></i>
+                                            Info básica del sistema
+                                        </div>
+                                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                            <br>
+                                            <label for="latitud">Latitud:</label>
+                                            <input type="text" id="latitud" name="latitud" readonly class="form-control">
+                                            <br>
+                                            <label for="longitud">Longitud:</label>
+                                            <input type="text" id="longitud" name="longitud" readonly class="form-control">
+                                            <br>
+                                            <p></p>
+                                            <button class="btn btn-primary" id="pvgis" type="button">Consultar datos de Irradiación</button>
+                                            <div id="loadingMessage" style="display: none;">Cargando...</div>
+                                            <p></p>
+                                            <button class="btn btn-primary" id="predim" type="button">Pre-dimensionar</button>
+                                            <p></p>
+                                            <br>
+                                            <label for="tipoSistema">Tipo de sistema:</label>
+                                            <input type="text" id="tipoSistema" name="tipoSistema" readonly>
+                                            <br>
+                                            <label for="inversor">Inversor:</label>
+                                            <input type="text" id="modInv" name="modInv" readonly>
+                                            <br>
+                                            <label for="panel">Panel solar:</label>
+                                            <input type="text" id="modPanel" name="modPanel" readonly>
+                                            <br>
+                                            <label for="bateria">Almacenamiento:</label>
+                                            <input type="text" id="modBat" name="modBat" readonly>
+                                            <br>
+                                            <label for="genset">Grupo Elect.:</label>
+                                            <input type="text" id="modGen" name="modGen" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-chart-bar me-1"></i>
+                                            Bar Chart Example
+                                        </div>
+                                        <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-table me-1"></i>
+                                    Tabla de datos obtenidos:
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <button class="btn btn-primary" id="sim" type="button">Simular</button>
+                                        <p></p>
+                                        <div id="tablaContainer" style="width: 800px; height: 500px; overflow: auto;">
+                                            <table id="tablaDatos">
+                                                <!-- La tabla y su contenido se agregarán aquí dinámicamente -->
+                                            </table>
+                                        </div>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!-- JS de jQuery (necesario para el funcionamiento de Bootstrap) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+        <!-- JS de Bootstrap (incluyendo los componentes de Bootstrap) -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+        <script> // Cargar sitio o eliminar proyecto
+            const btnCargar = document.getElementById('cargar');
+            const btnNuevo = document.getElementById('nuevo');
+            const btnEliminar = document.getElementById('eliminar');
+            const formulario = document.getElementById('proyecto');
+            let cond;
+            function redirigirASitio() {
+                    // Redirige al usuario a la ruta '/sitio' en el servidor
+                    window.location.href = '/sitio';
+                };
+            function eliminarProyecto() {
+                    // Redirige al usuario a la ruta '/sitio' en el servidor
+                    window.location.href = '/eliminarProyecto';
+                };
+            btnNuevo.addEventListener('click', redirigirASitio);
+            btnEliminar.addEventListener('click', eliminarProyecto);
+            btnCargar.addEventListener('click', () => {
+                if(formulario.style.display == 'none'){
+                    formulario.style.display = 'block';
+                }else{
+                    formulario.style.display = 'none';
+                }
+                cond = formulario.style.display;
+            });
+        </script>
+        <script> // Eliminar Proyecto
+            document.getElementById("eliminar").addEventListener("click", function () {
+                // Obtener el nombre del proyecto a eliminar del campo de selección
+                const nombreProyecto = document.getElementById("nombre").value;
+                let url = `/eliminarProyecto?nombreProyecto=${nombreProyecto}`;
+                // Realizar la solicitud POST para eliminar el proyecto
+                fetch(url)
+                    .then(response => {
+                        // Manejar la respuesta del servidor si es necesario
+                        if (response.ok) {
+                            console.log("Proyecto eliminado exitosamente");
+                            // Otras acciones si es necesario
+                        } else {
+                            console.error("Error al eliminar el proyecto");
+                            // Otras acciones si es necesario
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error en la solicitud POST:", error);
+                        // Manejar el error si es necesario
+                    });
+            });
+        </script>
+        <script> // Cargar proyecto
+            document.getElementById("cargar").addEventListener("click", function () {
+                // Obtener el nombre del proyecto seleccionado del campo de selección
+                const nombreProyecto = document.getElementById("nombre").value;
+
+                // Realizar la solicitud GET al servidor para obtener los datos del proyecto seleccionado
+                fetch(`/obtenerProyecto?nombreProyecto=${encodeURIComponent(nombreProyecto)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Actualizar los campos en el formulario con los datos recibidos del servidor
+                        document.getElementById("latitud").value = data.latitud;
+                        document.getElementById("longitud").value = data.longitud;
+                        document.getElementById("tipoSistema").value = data.sistema;
+                        document.getElementById("modInv").value = data.inversor;
+                        document.getElementById("modPanel").value = data.panel;
+                        document.getElementById("modBat").value = data.bateria;
+                        document.getElementById("modGen").value = data.genset;
+                    })
+                    .catch(error => {
+                        console.error("Error en la solicitud GET:", error);
+                        // Manejar el error si es necesario
+                    });
+            });
+        </script>
+        <script> // Cargar datos de Irradiacion solar por API a PVGIS
+            // Este script cargará los datos de la tabla utilizando una petición AJAX
+            // y los insertará en la tabla dentro del elemento <tbody>.
+            document.getElementById("pvgis").addEventListener("click", function () {
+                const tablaDatos = document.getElementById('tablaDatos');
+                const loadingMessage = document.getElementById('loadingMessage'); // Nuevo elemento para el mensaje de carga
+                const lat = document.getElementById('latitud').value;
+                const long = document.getElementById('longitud').value;
+                const url = `/obtenerRadiacion?latitud=${lat}&longitud=${long}`;
+
+                // Mostrar el mensaje de carga
+                loadingMessage.style.display = 'block';
+
+                fetch(url)
+                    .then(response => response.json()) // Parsear la respuesta como objeto JSON
+                    .then(data => {
+                        const dataArray = data.hourly; // Obtener la matriz de registros desde "hourly"
+
+                        // Crear la tabla y el cuerpo de la tabla
+                        const table = document.createElement('table');
+                        const tableBody = document.createElement('tbody');
+                        // Crear la fila de encabezado
+                        const headerRow = document.createElement('tr');
+                        const headers = ["Mes", "Irradiación total (W/m2)", "H_sun", "T2m (°C)", "WS10m (m/s)", "Generación (Wh)", "Almacenamiento (Wh)", "Consumo (Wh)", "Autoconsumo (Wh)", "Venta (Wh)", "Compra (Wh)"];
+                        headers.forEach(headerText => {
+                            const th = document.createElement('th');
+                            th.textContent = headerText;
+                            headerRow.appendChild(th);
+                        });
+                        tableBody.appendChild(headerRow);
+
+                        // Recorrer los registros y crear las filas de la tabla
+                        dataArray.forEach(registro => {
+                            const row = document.createElement('tr');
+                            const { time, 'Gb(i)': Gb, 'Gd(i)': Gd, 'Gr(i)': Gr, H_sun, Int, T2m, WS10m } = registro;
+                            const [fecha, hora] = time.split(':');
+                            const [anio, mes, dia] = [fecha.slice(0, 4), fecha.slice(4, 6), fecha.slice(6, 8)];
+                            const suma = Gb + Gd + Gr; // Calcular la suma
+                            const sumaFormatted = Number(suma.toPrecision(4)); // Redondear a 4 cifras significativas
+                            const rowData = [mes, sumaFormatted, H_sun, T2m, WS10m, 0, 0, 0, 0, 0, 0];
+                            rowData.forEach(cellData => {
+                                const cell = document.createElement('td');
+                                cell.textContent = cellData;
+                                row.appendChild(cell);
+                            });
+                            tableBody.appendChild(row);
+                        });
+
+                        table.appendChild(tableBody);
+                        tablaDatos.innerHTML = '';
+                        tablaDatos.appendChild(table);
+
+                        // Ocultar el mensaje de carga una vez que se complete la tabla
+                        loadingMessage.style.display = 'none';
+
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener los datos:', error);
+                        // Asegúrate de ocultar el mensaje de carga incluso si ocurre un error
+                        loadingMessage.style.display = 'none';
+                    });
+            });
+        </script>
+
+    </body>
+</html>
